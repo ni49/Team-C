@@ -1,6 +1,6 @@
 var express = require('express');
 var app = express();
-var serv = require('http).Server(app);
+var serv = require('http').Server(app);
 
 app.get('/',function(req, res){
 	res.sendFile(__dirname + '/client/index.html');
@@ -9,5 +9,3 @@ app.get('/',function(req, res){
 app.use('/client' ,express.static(__dirname + '/client'));
 
 serv.listen(2000);
-
-mywebsite.com:2000
