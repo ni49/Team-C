@@ -1,17 +1,22 @@
-var myPlayer;
-
 function startGame() {
-    myGameArea.start();
-	myPlayer = new component(30, 30, "blue", 10, 120);
+    var elem = document.getElementById("player");
+	var id = setInterval(frame, 5)
+	function frame() {
+		document.onkeydown = function(event){
+		if(event.keyCode === 68)	//d
+			elem.moveAngle = -1;
+		else if(event.keyCode === 83)	//s
+			socket.emit('keyPress',{inputId:'down',state:true});
+		else if(event.keyCode === 65) //a
+			socket.emit('keyPress',{inputId:'left',state:true});
+		else if(event.keyCode === 87) // w
+			socket.emit('keyPress',{inputId:'up',state:true});
+	}
+	}
 }
 
 var myGameArea = {
-    canvas : document.createElement("canvas"),
     start : function() {
-        this.canvas.width = window.innerWidth;
-        this.canvas.height = window.innerHeight;
-        this.context = this.canvas.getContext("2d");
-        document.body.insertBefore(this.canvas, document.body.childNodes[0]);
 		this.interval = setInterval(updateGameArea, 20);
     },
 	clear : function() {
@@ -19,20 +24,6 @@ var myGameArea = {
 	}
 }
 
-function component(width, height, color, x, y) {
-    this.width = width;
-    this.height = height;
-    this.x = x;
-    this.y = y;  
-	this.update = function() {
-		ctx = myGameArea.context;
-		ctx.fillStyle = color;
-		ctx.fillRect(this.x, this.y, this.width, this.height);
-	}
-}
-
 function updateGameArea() {
 	myGameArea.clear();
-	myPlayer.x += 1;
-	myPlayer.update();
 }
