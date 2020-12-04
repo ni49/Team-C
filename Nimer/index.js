@@ -97,7 +97,7 @@ var highestNibble = parseInt(db.score.find({}).sort({"highScore" : -1}).limit(1)
 //{
 //Socket.io connection setup
 import io from 'socket.io-client';
-const socket = io(`ws://${window.location.host}`);
+const socket = io(`ws://localhost:2000`);
 const connectPromise = new Promise(resolve => {
 	socket.on('connect', () => {
 		console.log('Connected to server!');
@@ -113,10 +113,10 @@ const connectPromise = new Promise(resolve => {
             players[dat.id].x = dat.x
             players[dat.id].y = dat.y
             players[dat.id].radius = dat.radius
-            socket.broadcast.emit('playerData', {x: dat.x, y: dat.y, radius: dat.radius, id: dat.id})
+            socket.emit('playerData', {x: dat.x, y: dat.y, radius: dat.radius, id: dat.id})
         } else {
             players.push({x: dat.x, y: dat.y, radius: dat.radius, id: dat.id})
-            socket.broadcast.emit('playerData', {x: dat.x, y: dat.y, radius: dat.radius, id: dat.id})
+            socket.emit('playerData', {x: dat.x, y: dat.y, radius: dat.radius, id: dat.id})
         }
 	});
 });
@@ -125,7 +125,7 @@ const connectPromise = new Promise(resolve => {
 setInterval(updateServer, 16)
 function updateServer() {
 	if(wait > waitTime){
-		socket.brodcast.emit('levelData', nibble, players)
+		socket.emit('levelData', (nibble, players))
 		//Send position to server
 		socket.emit('playerData', {name: client.name, id: client.id, x: client.x, y: client.y, radius: client.radius, removed: client.removed});
 		//Ping the server to see if it should be removed
@@ -288,6 +288,7 @@ socket.on('levelData', (foo, pla) => {
 			players[pla[i].id].removed = true
 		}
 	}
+	draw();
 })
 function addScore(data,cb){
 	db.score.insert({highScore: data},function(err){
@@ -491,7 +492,7 @@ socket.on('nibbleAdded', (dat) => {
 socket.on('eaten', (dat) => {
 	nibble[dat].removed = true
 	nibble[dat].hide()
-	socket.brodcast.emit('levelData', nibble, players)
+	socket.emit('levelData', (nibble, players))
 	if(mass/1000 > highestNibble){
 		addScore((mass/1000), true)
 	}
