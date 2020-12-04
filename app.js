@@ -9,7 +9,7 @@ const options = {}
 const bundler = new Bundler(file, options)
 app.use(bundler.middleware())
 //Port to launch localhost on
-const port = 2000
+const port = process.env.PORT || 2000
 //Lists used to store the data for the clients to read
 var nibble = {x: 50, y: 5}
 var players = []
