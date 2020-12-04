@@ -1,4 +1,1 @@
-# Team-C
-Authors: Nimer Irsan and John Neilson
-
-DISCLAIMER: The game idea was taken from a game called Agar.io as this was just for an assignment in the university.
+This our multiplayer game that uses HTML, Javascript, and CSS and is supported in all browsers but doesn't work on mobile devices or tablets. The instructions are simple eat as many nibbles as you can to take control of the game and you can also eat other players. Use WASD or the arrow keys to move.
